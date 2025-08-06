@@ -5,6 +5,7 @@
     "config": "homeserver.patch.json",
     "readme": "README.md",
     "gitignore": ".gitignore",
+    "git": ".git",
     "backend": {
       "index": "backend/index.json",
       "requirements": "backend/requirements.txt", 
