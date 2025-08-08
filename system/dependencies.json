@@ -8,11 +8,10 @@
       }
     ],
     "metadata": {
-      "version": "1.0.0",
       "platform": "debian",
       "conflicts": [],
       "updates": "true",
       "git_repository": "https://github.com/homeserver/test-tab.git",
-      "git_branch": "main"
+      "git_branch": "master"
     }
 }
