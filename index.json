@@ -1,5 +1,5 @@
 {
-  "name": "test",
+  "name": "testTab",
   "version": "1.0.3",
   "files": {
     "config": "homeserver.patch.json",

@@ -14,7 +14,7 @@ import json
 from .utils import TestDataProcessor, generate_sample_data
 
 # Create blueprint
-bp = Blueprint('test', __name__, url_prefix='/api/test')
+bp = Blueprint('testTab', __name__, url_prefix='/api/test')
 
 @bp.route('/status', methods=['GET'])
 def get_status():

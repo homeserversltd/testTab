@@ -1,6 +1,6 @@
 {
     "tabs": {
-        "test": {
+        "testTab": {
           "config": {
             "displayName": "Test",
             "adminOnly": false,

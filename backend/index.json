@@ -1,13 +1,13 @@
 {
-  "name": "test",
+  "name": "testTab",
+  "version": "1.0.0",
   "files": [
     {
       "source": "backend/__init__.py",
       "target": "/var/www/homeserver/backend/__init__.py",
       "type": "append",
-      "identifier": "test",
-      "marker": "PREMIUM TAB BLUEPRINTS",
-      "description": "Blueprint registration injection point for test premium tab"
+      "identifier": "testTab",
+      "description": "Blueprint registration injection point for testTab premium tab"
     }
   ]
 }
