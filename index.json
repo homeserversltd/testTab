@@ -1,6 +1,13 @@
 {
   "name": "testTab",
-  "version": "1.0.3",
+  "version": "1.0.4",
+  "config": {
+    "repository": {
+        "url": "https://github.com/homeserversltd/testTab.git",
+        "branch": "master"
+    },
+    "git_managed": true
+  },
   "files": {
     "config": "homeserver.patch.json",
     "readme": "README.md",
