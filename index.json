@@ -1,6 +1,6 @@
 {
   "name": "testTab",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "config": {
     "repository": {
         "url": "https://github.com/homeserversltd/testTab.git",
@@ -29,7 +29,7 @@
       "entry": "frontend/index.tsx"
     },
     "permissions": {
-      "sudoers": "permissions/premium_test"
+      "sudoers": "permissions/flask-test"
     },
     "system": {
       "dependencies": "system/dependencies.json"
