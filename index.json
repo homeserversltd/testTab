@@ -22,6 +22,8 @@
       "index": "frontend/index.json",
       "package": "frontend/package.patch.json",
       "TestCard": "frontend/components/TestCard.tsx",
+      "ComponentShowcase": "frontend/components/ComponentShowcase.tsx",
+      "ComponentShowcaseCSS": "frontend/components/ComponentShowcase.css",
       "useTestControls": "frontend/hooks/useTestControls.ts",
       "default": "frontend/images/default.png",
       "PortalCard": "frontend/PortalCard.css",

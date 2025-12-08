@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './PortalCard.css';
 import { TestService, TestConfig, HealthStatus } from './types';
 import { TestCard } from './components/TestCard';
+import { ComponentShowcase } from './components/ComponentShowcase';
+import { Tab, TabGroup, Button } from '../../../src/components/ui';
 import { useTestControls } from './hooks/useTestControls';
 
 // Sample test services for demonstration
@@ -49,7 +51,7 @@ const TestTablet: React.FC = () => {
   const { getConfig, checkHealth, isLoading, error } = useTestControls();
   const [config, setConfig] = useState<TestConfig | null>(null);
   const [healthStatus, setHealthStatus] = useState<HealthStatus | null>(null);
-  const [activeTab, setActiveTab] = useState<'services' | 'config' | 'health'>('services');
+  const [activeTab, setActiveTab] = useState<'services' | 'config' | 'health' | 'showcase'>('showcase');
 
   useEffect(() => {
     // Load initial configuration
@@ -101,26 +103,32 @@ const TestTablet: React.FC = () => {
         )}
       </div>
 
-      <div className="test-tablet-nav">
-        <button 
-          className={`nav-button ${activeTab === 'services' ? 'active' : ''}`}
+      <TabGroup>
+        <Tab
+          active={activeTab === 'showcase'}
+          onClick={() => setActiveTab('showcase')}
+        >
+          Component Showcase
+        </Tab>
+        <Tab
+          active={activeTab === 'services'}
           onClick={() => setActiveTab('services')}
         >
           Services
-        </button>
-        <button 
-          className={`nav-button ${activeTab === 'config' ? 'active' : ''}`}
+        </Tab>
+        <Tab
+          active={activeTab === 'config'}
           onClick={() => setActiveTab('config')}
         >
           Configuration
-        </button>
-        <button 
-          className={`nav-button ${activeTab === 'health' ? 'active' : ''}`}
+        </Tab>
+        <Tab
+          active={activeTab === 'health'}
           onClick={() => setActiveTab('health')}
         >
           Health Status
-        </button>
-      </div>
+        </Tab>
+      </TabGroup>
 
       <div className="test-tablet-content">
         {error && (
@@ -194,13 +202,14 @@ const TestTablet: React.FC = () => {
           <div className="health-panel">
             <div className="health-header">
               <h3>Health Status</h3>
-              <button 
+              <Button
+                variant="primary"
                 onClick={handleHealthCheck}
                 disabled={isLoading}
-                className="health-check-button"
+                loading={isLoading}
               >
                 {isLoading ? 'Checking...' : 'Run Health Check'}
-              </button>
+              </Button>
             </div>
 
             {healthStatus ? (
@@ -246,6 +255,10 @@ const TestTablet: React.FC = () => {
               <p>Click &quot;Run Health Check&quot; to check system status</p>
             )}
           </div>
+        )}
+
+        {activeTab === 'showcase' && (
+          <ComponentShowcase />
         )}
       </div>
     </div>

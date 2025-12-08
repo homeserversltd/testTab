@@ -42,6 +42,20 @@
       "type": "copy",
       "identifier": null,
       "description": "Default icon for the tablet"
+    },
+    {
+      "source": "frontend/components/ComponentShowcase.tsx",
+      "target": "/var/www/homeserver/src/tablets/testTab/components/ComponentShowcase.tsx",
+      "type": "copy",
+      "identifier": null,
+      "description": "UI Component Library showcase component"
+    },
+    {
+      "source": "frontend/components/ComponentShowcase.css",
+      "target": "/var/www/homeserver/src/tablets/testTab/components/ComponentShowcase.css",
+      "type": "copy",
+      "identifier": null,
+      "description": "ComponentShowcase CSS styles"
     }
   ]
 }
