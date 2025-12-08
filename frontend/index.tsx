@@ -90,19 +90,6 @@ const TestTablet: React.FC = () => {
 
   return (
     <div className="test-tablet">
-      <div className="test-tablet-header">
-        <h2>Test Premium Tab</h2>
-        <p className="test-tablet-description">
-          A comprehensive testing environment for premium tab functionality
-        </p>
-        
-        {config && (
-          <div className="version-info">
-            <span className="version-badge">v{config.version}</span>
-          </div>
-        )}
-      </div>
-
       <TabGroup>
         <Tab
           active={activeTab === 'showcase'}

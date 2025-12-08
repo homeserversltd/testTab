@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Toggle, Tab, TabGroup, Input, Card, Badge, Checkbox, VisibilityToggle, PlusButton, EditableField, Calendar, TimePicker, RowInfoTile } from '../../../../src/components/ui';
+import { Button, Toggle, Tab, TabGroup, Input, Card, Badge, Checkbox, VisibilityToggle, PlusButton, EditableField, Calendar, TimePicker, RowInfoTile, Select, Slider, TextBox } from '../../../../src/components/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUser, faCog, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import './ComponentShowcase.css';
@@ -25,6 +25,46 @@ export const ComponentShowcase: React.FC = () => {
   const [calendarWeeklyValue, setCalendarWeeklyValue] = useState('');
   const [calendarMonthlyValue, setCalendarMonthlyValue] = useState('');
   const [timePickerValue, setTimePickerValue] = useState('03:00');
+  const [selectedDevice, setSelectedDevice] = useState('');
+  const [selectedStrategy, setSelectedStrategy] = useState('');
+  const [selectError, setSelectError] = useState('');
+  const [sliderValue1, setSliderValue1] = useState(50);
+  const [sliderValue2, setSliderValue2] = useState(25);
+  const [sliderValue3, setSliderValue3] = useState(75);
+  const [sliderValue4, setSliderValue4] = useState(50);
+  const [logContent, setLogContent] = useState(`[2025-12-08 18:53:57] [INFO] Starting reinstallation of premium tab: testTab
+[2025-12-08 18:53:57] [INFO] Tab 'testTab' is currently installed, proceeding with reinstall
+[2025-12-08 18:53:57] [INFO] Step 1: Uninstalling current installation
+[2025-12-08 18:53:59] [INFO] Step 2: Reinstalling tab
+[2025-12-08 18:54:00] [INFO] Python requirements installed successfully
+[2025-12-08 18:54:04] [INFO] NPM patch applied successfully
+[2025-12-08 18:55:13] [INFO] Frontend build completed
+[2025-12-08 18:55:28] [INFO] Premium tab 'testTab' reinstalled successfully`);
+  const [codeContent] = useState(`function calculateTotal(items) {
+  return items.reduce((sum, item) => {
+    return sum + (item.price * item.quantity);
+  }, 0);
+}
+
+const cart = [
+  { price: 19.99, quantity: 2 },
+  { price: 5.50, quantity: 3 },
+  { price: 12.00, quantity: 1 }
+];
+
+const total = calculateTotal(cart);
+console.log(\`Total: $\${total.toFixed(2)}\`);`);
+  const [terminalContent] = useState(`$ npm install -g serve
+$ serve -s build
+
+   ┌─────────────────────────────────────┐
+   │                                     │
+   │   Serving!                          │
+   │                                     │
+   │   - Local:    http://localhost:3000 │
+   │   - Network:  http://192.168.1.100  │
+   │                                     │
+   └─────────────────────────────────────┘`);
 
   const handleToggleChange = (key: string) => (checked: boolean) => {
     setToggleStates(prev => ({ ...prev, [key]: checked }));
@@ -106,6 +146,24 @@ export const ComponentShowcase: React.FC = () => {
           onClick={() => setActiveShowcaseTab('row-info-tile')}
         >
           Row Info Tile
+        </Tab>
+        <Tab
+          active={activeShowcaseTab === 'dropdowns'}
+          onClick={() => setActiveShowcaseTab('dropdowns')}
+        >
+          Dropdowns
+        </Tab>
+        <Tab
+          active={activeShowcaseTab === 'slider'}
+          onClick={() => setActiveShowcaseTab('slider')}
+        >
+          Slider
+        </Tab>
+        <Tab
+          active={activeShowcaseTab === 'textbox'}
+          onClick={() => setActiveShowcaseTab('textbox')}
+        >
+          Text Box
         </Tab>
       </TabGroup>
 
@@ -1052,6 +1110,701 @@ export const ComponentShowcase: React.FC = () => {
                   }
                 />
               </div>
+            </div>
+          </div>
+        )}
+
+        {activeShowcaseTab === 'dropdowns' && (
+          <div className="showcase-section">
+            <h3>Click-to-Open Dropdowns</h3>
+            <p style={{ marginBottom: '2rem', color: 'var(--secondary)' }}>
+              Dropdown components that open on click, providing a list of selectable options. Click anywhere on the dropdown trigger to open the options list.
+            </p>
+
+            <div className="showcase-grid">
+              <div className="showcase-item">
+                <h4>Basic Dropdown</h4>
+                <Select
+                  label="Select Device to Update"
+                  value={selectedDevice}
+                  onChange={(e) => setSelectedDevice(e.target.value)}
+                  options={[
+                    { value: 'sdb', label: 'sdb - 🔒 Unlocked' },
+                    { value: 'sdc', label: 'sdc - 🔒 Unlocked' },
+                    { value: 'sdd', label: 'sdd - 🔒 Locked' },
+                  ]}
+                  placeholder="Select a device"
+                />
+                {selectedDevice && (
+                  <p style={{ marginTop: '0.5rem', fontSize: '12px', color: 'var(--secondary)' }}>
+                    Selected: {selectedDevice}
+                  </p>
+                )}
+              </div>
+
+              <div className="showcase-item">
+                <h4>Dropdown with Strategy Options</h4>
+                <Select
+                  label="Strategy"
+                  value={selectedStrategy}
+                  onChange={(e) => setSelectedStrategy(e.target.value)}
+                  options={[
+                    { value: 'safe', label: 'Safe Key Rotation' },
+                    { value: 'replace', label: 'Replace Primary Key' },
+                    { value: 'add', label: 'Add to Slot 2' },
+                  ]}
+                  placeholder="Select a strategy"
+                />
+                {selectedStrategy && (
+                  <p style={{ marginTop: '0.5rem', fontSize: '12px', color: 'var(--secondary)' }}>
+                    Selected: {selectedStrategy}
+                  </p>
+                )}
+              </div>
+
+              <div className="showcase-item">
+                <h4>Required Field</h4>
+                <Select
+                  label="Required Selection"
+                  value=""
+                  onChange={() => {}}
+                  options={[
+                    { value: 'option1', label: 'Option 1' },
+                    { value: 'option2', label: 'Option 2' },
+                    { value: 'option3', label: 'Option 3' },
+                  ]}
+                  placeholder="Please select an option"
+                  required
+                />
+              </div>
+
+              <div className="showcase-item">
+                <h4>Dropdown with Error</h4>
+                <Select
+                  label="Select with Error"
+                  value=""
+                  onChange={() => {}}
+                  options={[
+                    { value: 'option1', label: 'Option 1' },
+                    { value: 'option2', label: 'Option 2' },
+                  ]}
+                  placeholder="Select an option"
+                  error="This field is required"
+                />
+              </div>
+
+              <div className="showcase-item">
+                <h4>Dropdown Sizes</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div>
+                    <label style={{ fontSize: '12px', display: 'block', marginBottom: '0.25rem' }}>Small</label>
+                    <Select
+                      size="small"
+                      value=""
+                      onChange={() => {}}
+                      options={[
+                        { value: '1', label: 'Option 1' },
+                        { value: '2', label: 'Option 2' },
+                      ]}
+                      placeholder="Small dropdown"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '12px', display: 'block', marginBottom: '0.25rem' }}>Medium</label>
+                    <Select
+                      size="medium"
+                      value=""
+                      onChange={() => {}}
+                      options={[
+                        { value: '1', label: 'Option 1' },
+                        { value: '2', label: 'Option 2' },
+                      ]}
+                      placeholder="Medium dropdown"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '12px', display: 'block', marginBottom: '0.25rem' }}>Large</label>
+                    <Select
+                      size="large"
+                      value=""
+                      onChange={() => {}}
+                      options={[
+                        { value: '1', label: 'Option 1' },
+                        { value: '2', label: 'Option 2' },
+                      ]}
+                      placeholder="Large dropdown"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="showcase-item">
+                <h4>Disabled Dropdown</h4>
+                <Select
+                  label="Disabled Selection"
+                  value="option1"
+                  onChange={() => {}}
+                  options={[
+                    { value: 'option1', label: 'Selected Option' },
+                    { value: 'option2', label: 'Another Option' },
+                  ]}
+                  disabled
+                />
+              </div>
+
+              <div className="showcase-item">
+                <h4>Many Options</h4>
+                <Select
+                  label="Select from Many Options"
+                  value=""
+                  onChange={() => {}}
+                  options={[
+                    { value: '1', label: 'First Option' },
+                    { value: '2', label: 'Second Option' },
+                    { value: '3', label: 'Third Option' },
+                    { value: '4', label: 'Fourth Option' },
+                    { value: '5', label: 'Fifth Option' },
+                    { value: '6', label: 'Sixth Option' },
+                    { value: '7', label: 'Seventh Option' },
+                    { value: '8', label: 'Eighth Option' },
+                  ]}
+                  placeholder="Choose from list"
+                />
+              </div>
+
+              <div className="showcase-item">
+                <h4>Form Example</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <Select
+                    label="Device"
+                    value={selectedDevice}
+                    onChange={(e) => setSelectedDevice(e.target.value)}
+                    options={[
+                      { value: 'sdb', label: 'sdb - 🔒 Unlocked' },
+                      { value: 'sdc', label: 'sdc - 🔒 Unlocked' },
+                    ]}
+                    placeholder="Select a device"
+                    required
+                  />
+                  <Select
+                    label="Strategy"
+                    value={selectedStrategy}
+                    onChange={(e) => {
+                      setSelectedStrategy(e.target.value);
+                      if (!e.target.value) {
+                        setSelectError('Strategy is required');
+                      } else {
+                        setSelectError('');
+                      }
+                    }}
+                    options={[
+                      { value: 'safe', label: 'Safe Key Rotation - Add or replace key in slot 1, preserving the primary key' },
+                      { value: 'replace', label: 'Replace Primary Key - Replace the primary key with the NAS key' },
+                    ]}
+                    placeholder="Select a strategy"
+                    error={selectError}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <h3>Usage Notes</h3>
+            <div className="showcase-item">
+              <ul style={{ color: 'var(--secondary)', lineHeight: '1.6' }}>
+                <li>Click anywhere on the dropdown trigger to open the options list</li>
+                <li>Options appear in a dropdown menu below the trigger</li>
+                <li>Click outside or select an option to close</li>
+                <li>Keyboard accessible: Enter/Space to open, Arrow keys to navigate, Enter to select</li>
+                <li>Visual indicator (chevron icon) shows dropdown functionality</li>
+                <li>Hover effects use <code>--primaryHover</code> color</li>
+                <li>Always provide a label for accessibility</li>
+                <li>Use descriptive option labels (e.g., "sdb - 🔒 Unlocked")</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {activeShowcaseTab === 'slider' && (
+          <div className="showcase-section">
+            <h3>Slider Component</h3>
+            <p style={{ marginBottom: '2rem', color: 'var(--secondary)' }}>
+              Range slider component for selecting numeric values within a min/max range. Supports continuous updates while dragging and optional release callback.
+            </p>
+
+            <div className="showcase-grid">
+              <div className="showcase-item">
+                <h4>Basic Slider</h4>
+                <Slider
+                  min={0}
+                  max={100}
+                  value={sliderValue1}
+                  onChange={setSliderValue1}
+                  leftLabel="Min"
+                  rightLabel="Max"
+                />
+                <p style={{ marginTop: '0.5rem', fontSize: '12px', color: 'var(--secondary)' }}>
+                  Value: {sliderValue1}
+                </p>
+              </div>
+
+              <div className="showcase-item">
+                <h4>Slider with Labels</h4>
+                <Slider
+                  min={0}
+                  max={100}
+                  value={sliderValue2}
+                  onChange={setSliderValue2}
+                  leftLabel="More Leases"
+                  rightLabel="More Reservations"
+                />
+                <p style={{ marginTop: '0.5rem', fontSize: '12px', color: 'var(--secondary)' }}>
+                  Value: {sliderValue2}
+                </p>
+              </div>
+
+              <div className="showcase-item">
+                <h4>Slider with Step</h4>
+                <Slider
+                  min={0}
+                  max={100}
+                  value={sliderValue3}
+                  onChange={setSliderValue3}
+                  step={5}
+                  leftLabel="0%"
+                  rightLabel="100%"
+                />
+                <p style={{ marginTop: '0.5rem', fontSize: '12px', color: 'var(--secondary)' }}>
+                  Value: {sliderValue3} (step: 5)
+                </p>
+              </div>
+
+              <div className="showcase-item">
+                <h4>Slider with onRelease</h4>
+                <Slider
+                  min={8}
+                  max={247}
+                  value={sliderValue4}
+                  onChange={setSliderValue4}
+                  onRelease={(value) => {
+                    console.log('Slider released at:', value);
+                    alert(`Value saved: ${value}`);
+                  }}
+                  leftLabel="Min: 8"
+                  rightLabel="Max: 247"
+                />
+                <p style={{ marginTop: '0.5rem', fontSize: '12px', color: 'var(--secondary)' }}>
+                  Value: {sliderValue4} (check console on release)
+                </p>
+              </div>
+
+              <div className="showcase-item">
+                <h4>Slider Sizes</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                  <div>
+                    <label style={{ fontSize: '12px', display: 'block', marginBottom: '0.5rem' }}>Small</label>
+                    <Slider
+                      min={0}
+                      max={100}
+                      value={50}
+                      onChange={() => {}}
+                      size="small"
+                      leftLabel="0"
+                      rightLabel="100"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '12px', display: 'block', marginBottom: '0.5rem' }}>Medium (Default)</label>
+                    <Slider
+                      min={0}
+                      max={100}
+                      value={50}
+                      onChange={() => {}}
+                      size="medium"
+                      leftLabel="0"
+                      rightLabel="100"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '12px', display: 'block', marginBottom: '0.5rem' }}>Large</label>
+                    <Slider
+                      min={0}
+                      max={100}
+                      value={50}
+                      onChange={() => {}}
+                      size="large"
+                      leftLabel="0"
+                      rightLabel="100"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="showcase-item">
+                <h4>Disabled Slider</h4>
+                <Slider
+                  min={0}
+                  max={100}
+                  value={75}
+                  onChange={() => {}}
+                  disabled
+                  leftLabel="Disabled"
+                  rightLabel="Slider"
+                />
+              </div>
+
+              <div className="showcase-item">
+                <h4>Without Labels</h4>
+                <Slider
+                  min={0}
+                  max={100}
+                  value={60}
+                  onChange={(value) => console.log('Value:', value)}
+                  aria-label="Slider without labels"
+                />
+                <p style={{ marginTop: '0.5rem', fontSize: '12px', color: 'var(--secondary)' }}>
+                  Accessible via aria-label
+                </p>
+              </div>
+
+              <div className="showcase-item">
+                <h4>Custom Range</h4>
+                <Slider
+                  min={10}
+                  max={90}
+                  value={45}
+                  onChange={() => {}}
+                  leftLabel="10"
+                  rightLabel="90"
+                />
+                <p style={{ marginTop: '0.5rem', fontSize: '12px', color: 'var(--secondary)' }}>
+                  Custom min/max range
+                </p>
+              </div>
+
+              <div className="showcase-item">
+                <h4>DHCP Reservation Example</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <Slider
+                    min={8}
+                    max={247}
+                    value={50}
+                    onChange={() => {}}
+                    leftLabel="More Leases"
+                    rightLabel="More Reservations"
+                  />
+                  <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    fontSize: '0.75rem', 
+                    color: 'var(--secondary)',
+                    fontStyle: 'italic',
+                    padding: '4px 8px',
+                    background: 'var(--hiddenTabBackground)',
+                    borderRadius: '4px'
+                  }}>
+                    <span>Min: 8 (current reservations)</span>
+                    <span>Max: 247 (ensuring 2 active hosts minimum)</span>
+                  </div>
+                  <div style={{ 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    gap: '0.5rem',
+                    padding: '12px',
+                    background: 'var(--hiddenTabBackground)',
+                    borderRadius: '4px'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span style={{ fontSize: '0.9rem', color: 'var(--secondary)' }}>Reserved Range:</span>
+                      <span style={{ fontSize: '0.9rem', fontFamily: 'monospace' }}>192.168.123.2 - 192.168.123.51</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span style={{ fontSize: '0.9rem', color: 'var(--secondary)' }}>Pool Range:</span>
+                      <span style={{ fontSize: '0.9rem', fontFamily: 'monospace' }}>192.168.123.52 - 192.168.123.250</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h3>Usage Notes</h3>
+            <div className="showcase-item">
+              <ul style={{ color: 'var(--secondary)', lineHeight: '1.6' }}>
+                <li>Drag the thumb or use arrow keys to change the value</li>
+                <li><code>onChange</code> fires continuously while dragging</li>
+                <li><code>onRelease</code> (optional) fires when user stops dragging - useful for saving values</li>
+                <li>Visual fill track shows current position using <code>--primary</code> color</li>
+                <li>Thumb uses <code>--accent</code> color for visibility</li>
+                <li>Track background uses <code>--hiddenTabBackground</code> color</li>
+                <li>Supports <code>step</code> prop for discrete value increments</li>
+                <li>Keyboard accessible: Arrow keys to adjust, Home/End for min/max</li>
+                <li>Always provide labels or <code>aria-label</code> for accessibility</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {activeShowcaseTab === 'textbox' && (
+          <div className="showcase-section">
+            <h3>TextBox Component</h3>
+            <p style={{ marginBottom: '2rem', color: 'var(--secondary)' }}>
+              Reliable text display component for logs, code, terminal output, and other text content. Supports auto-scroll, custom headers, and action buttons.
+            </p>
+
+            <div className="showcase-grid">
+              <div className="showcase-item">
+                <h4>Log Variant</h4>
+                <TextBox
+                  variant="log"
+                  value={logContent}
+                  header="System Logs"
+                  actions={
+                    <>
+                      <Button variant="primary" size="small" onClick={() => {
+                        navigator.clipboard.writeText(logContent);
+                        alert('Logs copied to clipboard!');
+                      }}>
+                        Copy
+                      </Button>
+                      <Button variant="secondary" size="small" onClick={() => {
+                        setLogContent(logContent + '\n[2025-12-08 18:56:00] [INFO] Log entry refreshed');
+                      }}>
+                        Refresh
+                      </Button>
+                    </>
+                  }
+                  autoScroll={true}
+                  maxHeight="300px"
+                />
+              </div>
+
+              <div className="showcase-item">
+                <h4>Code Variant</h4>
+                <TextBox
+                  variant="code"
+                  value={codeContent}
+                  header="Code Preview"
+                  maxHeight="300px"
+                />
+              </div>
+
+              <div className="showcase-item">
+                <h4>Terminal Variant</h4>
+                <TextBox
+                  variant="terminal"
+                  value={terminalContent}
+                  header="Terminal Output"
+                  maxHeight="300px"
+                />
+              </div>
+
+              <div className="showcase-item">
+                <h4>Plain Text</h4>
+                <TextBox
+                  variant="plain"
+                  value="This is a plain text display. It can be used for any text content that doesn't require special formatting. The text wraps naturally and supports scrolling when content exceeds the container height."
+                  header="Plain Text Display"
+                  maxHeight="200px"
+                />
+              </div>
+
+              <div className="showcase-item">
+                <h4>With Auto-Scroll</h4>
+                <TextBox
+                  variant="log"
+                  value={logContent}
+                  header="Live Logs"
+                  autoScroll={true}
+                  maxHeight="250px"
+                />
+                <p style={{ fontSize: '12px', color: 'var(--secondary)', marginTop: '0.5rem' }}>
+                  Auto-scrolls to bottom when content updates
+                </p>
+              </div>
+
+              <div className="showcase-item">
+                <h4>Without Header</h4>
+                <TextBox
+                  variant="plain"
+                  value="This text box has no header. It's useful for inline text displays or when you want a minimal appearance."
+                  maxHeight="150px"
+                />
+              </div>
+
+              <div className="showcase-item">
+                <h4>Text Box Sizes</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div>
+                    <label style={{ fontSize: '12px', display: 'block', marginBottom: '0.25rem' }}>Small</label>
+                    <TextBox
+                      variant="log"
+                      value="[2025-12-08 18:53:57] [INFO] Small text box example"
+                      size="small"
+                      maxHeight="100px"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '12px', display: 'block', marginBottom: '0.25rem' }}>Medium (Default)</label>
+                    <TextBox
+                      variant="log"
+                      value="[2025-12-08 18:53:57] [INFO] Medium text box example"
+                      size="medium"
+                      maxHeight="100px"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '12px', display: 'block', marginBottom: '0.25rem' }}>Large</label>
+                    <TextBox
+                      variant="log"
+                      value="[2025-12-08 18:53:57] [INFO] Large text box example"
+                      size="large"
+                      maxHeight="100px"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="showcase-item">
+                <h4>Monospace Option</h4>
+                <TextBox
+                  variant="plain"
+                  value="This plain text box uses monospace font for better readability of structured data."
+                  header="Monospace Text"
+                  monospace={true}
+                  maxHeight="150px"
+                />
+              </div>
+
+              <div className="showcase-item">
+                <h4>Non-Scrollable</h4>
+                <TextBox
+                  variant="plain"
+                  value="This text box does not scroll. Content that exceeds the container height will be clipped."
+                  header="Fixed Height"
+                  scrollable={false}
+                  maxHeight="100px"
+                />
+              </div>
+
+              <div className="showcase-item">
+                <h4>With Placeholder</h4>
+                <TextBox
+                  variant="log"
+                  value=""
+                  header="Empty Log"
+                  placeholder="No log entries yet. Logs will appear here when available."
+                  maxHeight="200px"
+                />
+              </div>
+
+              <div className="showcase-item">
+                <h4>Disabled State</h4>
+                <TextBox
+                  variant="log"
+                  value="[2025-12-08 18:53:57] [INFO] This text box is disabled"
+                  header="Disabled Log"
+                  disabled={true}
+                  maxHeight="150px"
+                />
+              </div>
+
+              <div className="showcase-item">
+                <h4>Long Content Example</h4>
+                <TextBox
+                  variant="log"
+                  value={Array.from({ length: 50 }, (_, i) => 
+                    `[2025-12-08 ${String(18 + Math.floor(i / 10)).padStart(2, '0')}:${String(i % 60).padStart(2, '0')}] [INFO] Log entry ${i + 1}`
+                  ).join('\n')}
+                  header="Extended Log"
+                  actions={
+                    <Button variant="secondary" size="small" onClick={() => alert('Clear logs')}>
+                      Clear
+                    </Button>
+                  }
+                  autoScroll={false}
+                  maxHeight="300px"
+                />
+              </div>
+
+              <div className="showcase-item">
+                <h4>Code with Syntax</h4>
+                <TextBox
+                  variant="code"
+                  value={`// React component example
+import React from 'react';
+
+export const MyComponent: React.FC = () => {
+  const [count, setCount] = React.useState(0);
+  
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>
+        Increment
+      </button>
+    </div>
+  );
+};`}
+                  header="React Component"
+                  maxHeight="300px"
+                />
+              </div>
+            </div>
+
+            <h3>Usage Examples</h3>
+            <div className="showcase-item">
+              <h4>System Update Logs</h4>
+              <TextBox
+                variant="log"
+                value={logContent}
+                header="Update Logs"
+                actions={
+                  <>
+                    <Button variant="primary" size="small" onClick={() => {
+                      navigator.clipboard.writeText(logContent);
+                      alert('Copied to clipboard!');
+                    }}>
+                      Copy Contents
+                    </Button>
+                    <Button variant="secondary" size="small" onClick={() => {
+                      setLogContent(logContent + '\n[2025-12-08 18:56:00] [INFO] Log refreshed');
+                    }}>
+                      Refresh
+                    </Button>
+                  </>
+                }
+                autoScroll={true}
+                maxHeight="400px"
+              />
+            </div>
+
+            <div className="showcase-item">
+              <h4>Terminal Command Output</h4>
+              <TextBox
+                variant="terminal"
+                value={terminalContent}
+                header="Command Output"
+                maxHeight="250px"
+              />
+            </div>
+
+            <h3>Usage Notes</h3>
+            <div className="showcase-item">
+              <ul style={{ color: 'var(--secondary)', lineHeight: '1.6' }}>
+                <li><strong>Variants:</strong> <code>plain</code> (default), <code>log</code> (monospace, log-friendly), <code>code</code> (monospace, code styling), <code>terminal</code> (monospace, terminal styling)</li>
+                <li><strong>Sizes:</strong> <code>small</code>, <code>medium</code> (default), <code>large</code></li>
+                <li><strong>Header:</strong> Optional header section with title and action buttons</li>
+                <li><strong>Auto-scroll:</strong> Automatically scrolls to bottom when content updates (useful for live logs)</li>
+                <li><strong>Monospace:</strong> Force monospace font even on plain variant</li>
+                <li><strong>Scrollable:</strong> Control whether content can scroll (default: true)</li>
+                <li><strong>Max Height:</strong> Set maximum height for the content area</li>
+                <li><strong>Placeholder:</strong> Show placeholder text when value is empty</li>
+                <li><strong>Disabled:</strong> Disable interaction and show disabled styling</li>
+                <li>Log and terminal variants automatically use monospace font</li>
+                <li>Code variant uses subtle background color for better readability</li>
+                <li>Custom scrollbar styling matches theme colors</li>
+                <li>All variants use CSS variables for theming</li>
+              </ul>
             </div>
           </div>
         )}
