@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { Button, Toggle, Tab, TabGroup, Input, Card, Badge, Checkbox, VisibilityToggle, PlusButton, EditableField, Calendar, TimePicker, RowInfoTile, Select, Slider, TextBox } from '../../../../src/components/ui';
+import { Button, Toggle, Tab, TabGroup, Input, Card, Badge, Checkbox, VisibilityToggle, PlusButton, EditableField, Calendar, TimePicker, RowInfoTile, Select, Slider, TextBox, Breadcrumbs, IconButton, FileInput, ProgressBar, Table, Collapsible } from '../../../../src/components/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faUser, faCog, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faUser, faCog, faCheck, faTimes, faRotate, faSync, faRefresh, faChevronRight, faChevronDown, faFolder } from '@fortawesome/free-solid-svg-icons';
+import { useModal } from '../../../../src/hooks/useModal';
 import './ComponentShowcase.css';
 
 export const ComponentShowcase: React.FC = () => {
+  const { open: openModal, close: closeModal } = useModal();
+  
   const [toggleStates, setToggleStates] = useState({
     toggle1: false,
     toggle2: true,
@@ -32,6 +35,8 @@ export const ComponentShowcase: React.FC = () => {
   const [sliderValue2, setSliderValue2] = useState(25);
   const [sliderValue3, setSliderValue3] = useState(75);
   const [sliderValue4, setSliderValue4] = useState(50);
+  const [breadcrumbPath, setBreadcrumbPath] = useState('/mnt/nas/media/kids');
+  const [fileInputFiles, setFileInputFiles] = useState<FileList | null>(null);
   const [logContent, setLogContent] = useState(`[2025-12-08 18:53:57] [INFO] Starting reinstallation of premium tab: testTab
 [2025-12-08 18:53:57] [INFO] Tab 'testTab' is currently installed, proceeding with reinstall
 [2025-12-08 18:53:57] [INFO] Step 1: Uninstalling current installation
@@ -164,6 +169,36 @@ $ serve -s build
           onClick={() => setActiveShowcaseTab('textbox')}
         >
           Text Box
+        </Tab>
+        <Tab
+          active={activeShowcaseTab === 'upload-components'}
+          onClick={() => setActiveShowcaseTab('upload-components')}
+        >
+          Upload Components
+        </Tab>
+        <Tab
+          active={activeShowcaseTab === 'progress-bar'}
+          onClick={() => setActiveShowcaseTab('progress-bar')}
+        >
+          Progress Bar
+        </Tab>
+        <Tab
+          active={activeShowcaseTab === 'table'}
+          onClick={() => setActiveShowcaseTab('table')}
+        >
+          Table
+        </Tab>
+        <Tab
+          active={activeShowcaseTab === 'collapsible'}
+          onClick={() => setActiveShowcaseTab('collapsible')}
+        >
+          Collapsible
+        </Tab>
+        <Tab
+          active={activeShowcaseTab === 'modals'}
+          onClick={() => setActiveShowcaseTab('modals')}
+        >
+          Modals
         </Tab>
       </TabGroup>
 
@@ -407,6 +442,27 @@ $ serve -s build
                   value="Cannot edit"
                   disabled
                 />
+              </div>
+
+              <div className="showcase-item">
+                <h4>Display Variant</h4>
+                <p style={{ fontSize: '0.9em', color: 'var(--secondary)', marginBottom: '0.75rem' }}>
+                  Dark background with accent-colored text, centered. Perfect for password displays and read-only values.
+                </p>
+                <div style={{ padding: '1rem', background: 'var(--hiddenTabBackground)', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                  <p style={{ marginBottom: '0.5rem', color: 'var(--text)' }}>
+                    <strong>Important:</strong> When importing the certificate bundle, use the following password:
+                  </p>
+                  <Input
+                    type="text"
+                    variant="display"
+                    value="homeserver"
+                    readOnly
+                  />
+                  <p style={{ fontSize: '0.8em', marginTop: '1em', padding: '0.5em', backgroundColor: 'var(--background-light)', borderRadius: '4px', color: 'var(--secondary)' }}>
+                    <strong>Note:</strong> If you change your Tailnet name settings, you will need to generate a new certificate and distribute it to each user to prevent browser warnings over the tailscale connection.
+                  </p>
+                </div>
               </div>
 
               <div className="showcase-item">
@@ -1804,6 +1860,942 @@ export const MyComponent: React.FC = () => {
                 <li>Code variant uses subtle background color for better readability</li>
                 <li>Custom scrollbar styling matches theme colors</li>
                 <li>All variants use CSS variables for theming</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {activeShowcaseTab === 'upload-components' && (
+          <div className="showcase-section">
+            <h3>Upload Components</h3>
+            <p style={{ color: 'var(--secondary)', marginBottom: '24px' }}>
+              New components for the upload tablet: Breadcrumbs, IconButton, and FileInput
+            </p>
+
+            <div className="showcase-grid">
+              {/* Breadcrumbs */}
+              <div className="showcase-item">
+                <h4>Breadcrumbs</h4>
+                <p style={{ color: 'var(--secondary)', fontSize: '0.9em', marginBottom: '12px' }}>
+                  Navigation breadcrumbs for directory paths
+                </p>
+                <div style={{ padding: '16px', background: 'var(--background)', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                  <Breadcrumbs
+                    items={[
+                      { name: 'nas', path: '/mnt/nas' },
+                      { name: 'media', path: '/mnt/nas/media' },
+                      { name: 'kids', path: '/mnt/nas/media/kids' },
+                    ]}
+                    currentPath={breadcrumbPath}
+                    onNavigate={(path) => {
+                      setBreadcrumbPath(path);
+                      console.log('Navigated to:', path);
+                    }}
+                  />
+                </div>
+                <div style={{ marginTop: '12px', padding: '12px', background: 'var(--hiddenTabBackground)', borderRadius: '4px' }}>
+                  <p style={{ fontSize: '0.85em', color: 'var(--secondary)', margin: 0 }}>
+                    <strong>Current path:</strong> {breadcrumbPath}
+                  </p>
+                  <div style={{ marginTop: '8px' }}>
+                    <Button
+                      variant="secondary"
+                      size="small"
+                      onClick={() => setBreadcrumbPath('/mnt/nas')}
+                    >
+                      Reset to Root
+                    </Button>
+                  </div>
+                </div>
+                <div className="showcase-item" style={{ marginTop: '16px' }}>
+                  <h5>Features:</h5>
+                  <ul style={{ color: 'var(--secondary)', lineHeight: '1.6', fontSize: '0.9em' }}>
+                    <li>Clickable path segments</li>
+                    <li>Current path highlighting</li>
+                    <li>Customizable separator (default: '/')</li>
+                    <li>Keyboard accessible (Enter/Space to navigate)</li>
+                    <li>Uses CSS variables for theming</li>
+                    <li>Responsive design</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* IconButton */}
+              <div className="showcase-item">
+                <h4>IconButton</h4>
+                <p style={{ color: 'var(--secondary)', fontSize: '0.9em', marginBottom: '12px' }}>
+                  Icon-only button component for actions like refresh, settings, etc.
+                </p>
+                <div style={{ padding: '16px', background: 'var(--background)', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                  <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+                    <div>
+                      <p style={{ fontSize: '0.85em', color: 'var(--secondary)', marginBottom: '4px' }}>Square (default)</p>
+                      <IconButton
+                        icon={faRotate}
+                        onClick={() => console.log('Refresh clicked')}
+                        size="small"
+                        aria-label="Refresh (small)"
+                      />
+                      <IconButton
+                        icon={faSync}
+                        onClick={() => console.log('Sync clicked')}
+                        size="medium"
+                        aria-label="Sync (medium)"
+                      />
+                      <IconButton
+                        icon={faRefresh}
+                        onClick={() => console.log('Refresh clicked')}
+                        size="large"
+                        aria-label="Refresh (large)"
+                      />
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '0.85em', color: 'var(--secondary)', marginBottom: '4px' }}>Circle</p>
+                      <IconButton
+                        icon={faRotate}
+                        onClick={() => console.log('Refresh clicked')}
+                        size="small"
+                        shape="circle"
+                        aria-label="Refresh (small circle)"
+                      />
+                      <IconButton
+                        icon={faSync}
+                        onClick={() => console.log('Sync clicked')}
+                        size="medium"
+                        shape="circle"
+                        aria-label="Sync (medium circle)"
+                      />
+                      <IconButton
+                        icon={faRefresh}
+                        onClick={() => console.log('Refresh clicked')}
+                        size="large"
+                        shape="circle"
+                        aria-label="Refresh (large circle)"
+                      />
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '0.85em', color: 'var(--secondary)', marginBottom: '4px' }}>Variants</p>
+                      <IconButton
+                        icon={faCog}
+                        onClick={() => console.log('Settings clicked')}
+                        size="medium"
+                        variant="default"
+                        aria-label="Settings (default)"
+                      />
+                      <IconButton
+                        icon={faCog}
+                        onClick={() => console.log('Settings clicked')}
+                        size="medium"
+                        variant="primary"
+                        aria-label="Settings (primary)"
+                      />
+                      <IconButton
+                        icon={faCog}
+                        onClick={() => console.log('Settings clicked')}
+                        size="medium"
+                        variant="secondary"
+                        aria-label="Settings (secondary)"
+                      />
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '0.85em', color: 'var(--secondary)', marginBottom: '4px' }}>Disabled</p>
+                      <IconButton
+                        icon={faRotate}
+                        onClick={() => {}}
+                        size="medium"
+                        disabled
+                        aria-label="Refresh (disabled)"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="showcase-item" style={{ marginTop: '16px' }}>
+                  <h5>Features:</h5>
+                  <ul style={{ color: 'var(--secondary)', lineHeight: '1.6', fontSize: '0.9em' }}>
+                    <li>Icon-only button variant</li>
+                    <li>Square or circular shape</li>
+                    <li>Size variants: small, medium, large</li>
+                    <li>Uses FontAwesome icons</li>
+                    <li>Hover effects with --primaryHover</li>
+                    <li>Disabled state support</li>
+                    <li>Keyboard accessible</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* FileInput */}
+              <div className="showcase-item">
+                <h4>FileInput</h4>
+                <p style={{ color: 'var(--secondary)', fontSize: '0.9em', marginBottom: '12px' }}>
+                  Styled file input with button and display field
+                </p>
+                <div style={{ padding: '16px', background: 'var(--background)', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                  <FileInput
+                    onChange={(files) => {
+                      setFileInputFiles(files);
+                      console.log('Files selected:', files ? Array.from(files).map(f => f.name) : 'none');
+                    }}
+                    multiple
+                    label="Select Files"
+                    buttonText="Choose Files"
+                    displayText="No file chosen"
+                    size="medium"
+                    aria-label="File selection"
+                  />
+                </div>
+                {fileInputFiles && fileInputFiles.length > 0 && (
+                  <div style={{ marginTop: '12px', padding: '12px', background: 'var(--hiddenTabBackground)', borderRadius: '4px' }}>
+                    <p style={{ fontSize: '0.85em', color: 'var(--secondary)', margin: '0 0 8px 0' }}>
+                      <strong>Selected files ({fileInputFiles.length}):</strong>
+                    </p>
+                    <ul style={{ fontSize: '0.85em', color: 'var(--text)', margin: 0, paddingLeft: '20px' }}>
+                      {Array.from(fileInputFiles).map((file, index) => (
+                        <li key={index}>{file.name} ({(file.size / 1024).toFixed(2)} KB)</li>
+                      ))}
+                    </ul>
+                    <div style={{ marginTop: '8px' }}>
+                      <Button
+                        variant="secondary"
+                        size="small"
+                        onClick={() => {
+                          setFileInputFiles(null);
+                          console.log('Files cleared');
+                        }}
+                      >
+                        Clear Selection
+                      </Button>
+                    </div>
+                  </div>
+                )}
+                <div style={{ marginTop: '12px', padding: '12px', background: 'var(--background)', borderRadius: '4px', border: '1px solid var(--border)' }}>
+                  <FileInput
+                    onChange={(files) => console.log('Single file selected:', files ? files[0]?.name : 'none')}
+                    multiple={false}
+                    accept="image/*"
+                    label="Select Image (Single)"
+                    buttonText="Choose Image"
+                    displayText="No image chosen"
+                    size="small"
+                    aria-label="Image selection"
+                  />
+                </div>
+                <div style={{ marginTop: '12px', padding: '12px', background: 'var(--background)', borderRadius: '4px', border: '1px solid var(--border)' }}>
+                  <FileInput
+                    onChange={(files) => console.log('Large file input:', files ? Array.from(files).map(f => f.name) : 'none')}
+                    multiple
+                    label="Select Multiple Files (Large)"
+                    buttonText="Choose Files"
+                    displayText="No files chosen"
+                    size="large"
+                    disabled={false}
+                    aria-label="Large file selection"
+                  />
+                </div>
+                <div className="showcase-item" style={{ marginTop: '16px' }}>
+                  <h5>Features:</h5>
+                  <ul style={{ color: 'var(--secondary)', lineHeight: '1.6', fontSize: '0.9em' }}>
+                    <li>Styled file input button (uses Button component)</li>
+                    <li>Display field showing selected file names or placeholder text</li>
+                    <li>Multiple file support</li>
+                    <li>File type filtering via accept attribute</li>
+                    <li>Size variants: small, medium, large</li>
+                    <li>Uses CSS variables for theming</li>
+                    <li>Accessible with proper labels and ARIA attributes</li>
+                    <li>Responsive design</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeShowcaseTab === 'progress-bar' && (
+          <div className="showcase-section">
+            <h2>Progress Bar Component</h2>
+            <p style={{ color: 'var(--secondary)', marginBottom: '24px' }}>
+              A flexible progress bar component with variants for different use cases (memory, process, disk).
+            </p>
+
+            <div className="showcase-item">
+              <h3>Basic Usage</h3>
+              <div style={{ marginTop: '16px' }}>
+                <ProgressBar value={45} />
+              </div>
+              <div style={{ marginTop: '16px' }}>
+                <ProgressBar value={75} showPercentage={false} />
+              </div>
+              <div style={{ marginTop: '16px' }}>
+                <ProgressBar value={30} label="RAM Usage" />
+              </div>
+            </div>
+
+            <div className="showcase-item">
+              <h3>Variants</h3>
+              <div style={{ marginTop: '16px' }}>
+                <ProgressBar value={65} variant="memory" label="Memory" />
+              </div>
+              <div style={{ marginTop: '16px' }}>
+                <ProgressBar value={25} variant="swap" label="Swap" />
+              </div>
+              <div style={{ marginTop: '16px' }}>
+                <ProgressBar value={80} variant="process" label="Process CPU" />
+              </div>
+              <div style={{ marginTop: '16px' }}>
+                <ProgressBar value={55} variant="disk" label="Disk Usage" />
+              </div>
+            </div>
+
+            <div className="showcase-item">
+              <h3>Size Variants</h3>
+              <div style={{ marginTop: '16px' }}>
+                <ProgressBar value={50} size="small" label="Small" />
+              </div>
+              <div style={{ marginTop: '16px' }}>
+                <ProgressBar value={50} size="medium" label="Medium" />
+              </div>
+              <div style={{ marginTop: '16px' }}>
+                <ProgressBar value={50} size="large" label="Large" />
+              </div>
+            </div>
+
+            <div className="showcase-item">
+              <h3>With Labels</h3>
+              <div style={{ marginTop: '16px' }}>
+                <ProgressBar 
+                  value={72} 
+                  leftLabel="Used: 7.2 GB" 
+                  rightLabel="Total: 10 GB" 
+                />
+              </div>
+              <div style={{ marginTop: '16px' }}>
+                <ProgressBar 
+                  value={45} 
+                  label="CPU Usage"
+                  leftLabel="45%" 
+                  rightLabel="55% idle" 
+                />
+              </div>
+            </div>
+
+            <div className="showcase-item">
+              <h3>Real-World Examples</h3>
+              <div style={{ marginTop: '16px', padding: '16px', background: 'var(--background)', borderRadius: '4px', border: '1px solid var(--border)' }}>
+                <h4 style={{ marginTop: 0, marginBottom: '12px' }}>System Resources</h4>
+                <ProgressBar value={68} variant="memory" label="RAM" leftLabel="Used: 6.8 GB" rightLabel="Available: 3.2 GB" />
+                <div style={{ marginTop: '12px' }}>
+                  <ProgressBar value={12} variant="swap" label="Swap" leftLabel="Used: 1.2 GB" rightLabel="Free: 8.8 GB" />
+                </div>
+                <div style={{ marginTop: '12px' }}>
+                  <ProgressBar value={85} variant="disk" label="Disk (/dev/sda1)" leftLabel="Used: 850 GB" rightLabel="Free: 150 GB" />
+                </div>
+              </div>
+              <div style={{ marginTop: '16px', padding: '16px', background: 'var(--background)', borderRadius: '4px', border: '1px solid var(--border)' }}>
+                <h4 style={{ marginTop: 0, marginBottom: '12px' }}>Process CPU Usage</h4>
+                <ProgressBar value={45} variant="process" leftLabel="chrome" rightLabel="45%" />
+                <div style={{ marginTop: '8px' }}>
+                  <ProgressBar value={32} variant="process" leftLabel="node" rightLabel="32%" />
+                </div>
+                <div style={{ marginTop: '8px' }}>
+                  <ProgressBar value={18} variant="process" leftLabel="python" rightLabel="18%" />
+                </div>
+              </div>
+            </div>
+
+            <div className="showcase-item" style={{ marginTop: '16px' }}>
+              <h5>Features:</h5>
+              <ul style={{ color: 'var(--secondary)', lineHeight: '1.6', fontSize: '0.9em' }}>
+                <li>Percentage-based width (0-100%)</li>
+                <li>Optional label/text overlay on the bar</li>
+                <li>Variants for different use cases (memory, process, disk, swap)</li>
+                <li>Color customization via CSS variables</li>
+                <li>Optional left/right labels</li>
+                <li>Show/hide percentage text</li>
+                <li>Size variants (small, medium, large)</li>
+                <li>Accessible with ARIA attributes</li>
+                <li>Backward compatible with legacy CSS classes</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {activeShowcaseTab === 'table' && (
+          <div className="showcase-section">
+            <h2>Table Component</h2>
+            <p style={{ color: 'var(--secondary)', marginBottom: '24px' }}>
+              A responsive table component with header styling, cell borders, and mobile-friendly card layout.
+            </p>
+
+            <div className="showcase-item">
+              <h3>Basic Table</h3>
+              <div style={{ marginTop: '16px' }}>
+                <Table
+                  headers={['Name', 'Status', 'Value']}
+                  rows={[
+                    ['Service A', 'Running', '100%'],
+                    ['Service B', 'Stopped', '0%'],
+                    ['Service C', 'Running', '75%'],
+                  ]}
+                />
+              </div>
+            </div>
+
+            <div className="showcase-item">
+              <h3>DHCP Leases Example</h3>
+              <div style={{ marginTop: '16px' }}>
+                <Table
+                  headers={['Device Note', 'Hostname', 'IP Address', 'MAC Address']}
+                  rows={[
+                    ['My Laptop', 'laptop.local', '192.168.1.100', 'aa:bb:cc:dd:ee:ff'],
+                    ['Phone', 'phone.local', '192.168.1.101', '11:22:33:44:55:66'],
+                    ['Tablet', 'tablet.local', '192.168.1.102', 'ff:ee:dd:cc:bb:aa'],
+                  ]}
+                  columnSizing={[
+                    { minWidth: '200px' },
+                    { minWidth: '120px' },
+                    { minWidth: '120px' },
+                    { minWidth: '150px' },
+                  ]}
+                />
+              </div>
+            </div>
+
+            <div className="showcase-item">
+              <h3>Network Interfaces Example</h3>
+              <div style={{ marginTop: '16px' }}>
+                <Table
+                  headers={['Interface', 'Label', 'Received', 'Sent']}
+                  rows={[
+                    ['enp1s0', 'WAN', '1.2 GB', '500 MB'],
+                    ['enp2s0', 'LAN', '5.8 GB', '3.2 GB'],
+                    ['tailscale0', 'Tailscale VPN', '250 MB', '180 MB'],
+                  ]}
+                />
+              </div>
+            </div>
+
+            <div className="showcase-item">
+              <h3>With Custom Column Sizing</h3>
+              <div style={{ marginTop: '16px' }}>
+                <Table
+                  headers={['ID', 'Description', 'Status']}
+                  rows={[
+                    ['001', 'This is a very long description that might wrap', 'Active'],
+                    ['002', 'Short', 'Inactive'],
+                    ['003', 'Medium length description', 'Pending'],
+                  ]}
+                  columnSizing={[
+                    { minWidth: '60px', width: '10%' },
+                    { minWidth: '200px', width: '70%' },
+                    { minWidth: '100px', width: '20%' },
+                  ]}
+                />
+              </div>
+            </div>
+
+            <div className="showcase-item">
+              <h3>Complex Data Example</h3>
+              <div style={{ marginTop: '16px' }}>
+                <Table
+                  headers={['Device', 'Type', 'Mount Point', 'Used', 'Free', 'Total', 'Percent']}
+                  rows={[
+                    ['/dev/sda1', 'ext4', '/', '850 GB', '150 GB', '1 TB', '85%'],
+                    ['/dev/sdb1', 'ext4', '/mnt/storage', '2.5 TB', '500 GB', '3 TB', '83%'],
+                    ['/dev/nvme0n1', 'ext4', '/home', '200 GB', '300 GB', '500 GB', '40%'],
+                  ]}
+                />
+              </div>
+            </div>
+
+            <div className="showcase-item" style={{ marginTop: '16px' }}>
+              <h5>Features:</h5>
+              <ul style={{ color: 'var(--secondary)', lineHeight: '1.6', fontSize: '0.9em' }}>
+                <li>Header row styling with background color</li>
+                <li>Cell border and padding</li>
+                <li>Responsive design (mobile stacking)</li>
+                <li>Optional column sizing/min-widths</li>
+                <li>Header background color (uses --hiddenTabBackground)</li>
+                <li>Border styling (uses --border)</li>
+                <li>Mobile breakpoints for card-style layout (480px, 768px)</li>
+                <li>Accessible with ARIA attributes</li>
+                <li>Backward compatible with legacy CSS classes (kea-leases-table, network-interfaces-table)</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {activeShowcaseTab === 'collapsible' && (
+          <div className="showcase-section">
+            <h2>Collapsible Component</h2>
+            <p style={{ color: 'var(--secondary)', marginBottom: '24px' }}>
+              An expandable/collapsible section component with caret icon, perfect for organizing content into expandable sections.
+            </p>
+
+            <div className="showcase-item">
+              <h3>Basic Usage</h3>
+              <div style={{ marginTop: '16px' }}>
+                <Collapsible title="System Settings">
+                  <div style={{ padding: '8px 0' }}>
+                    <p>This is the collapsible content. It can contain any React elements.</p>
+                    <Input label="Shared SSH Password" type="password" defaultValue="••••••••••" />
+                    <p style={{ fontSize: '0.85rem', color: 'var(--secondary)', marginTop: '8px' }}>
+                      Default root password from your preseed ISO (used for claiming new miners)
+                    </p>
+                  </div>
+                </Collapsible>
+              </div>
+            </div>
+
+            <div className="showcase-item">
+              <h3>Variants</h3>
+              <div style={{ marginTop: '16px' }}>
+                <Collapsible title="Default Variant" variant="default" style={{ marginBottom: '12px' }}>
+                  <p>Default variant with border and background.</p>
+                </Collapsible>
+                <Collapsible title="Card Variant" variant="card" style={{ marginBottom: '12px' }}>
+                  <p>Card variant with enhanced shadow.</p>
+                </Collapsible>
+                <Collapsible title="Minimal Variant" variant="minimal" style={{ marginBottom: '12px' }}>
+                  <p>Minimal variant with no border, clean look.</p>
+                </Collapsible>
+              </div>
+            </div>
+
+            <div className="showcase-item">
+              <h3>Size Variants</h3>
+              <div style={{ marginTop: '16px' }}>
+                <Collapsible title="Extra Small (small)" size="small" style={{ marginBottom: '12px' }}>
+                  <p>Extra small size collapsible section - compact and minimal.</p>
+                </Collapsible>
+                <Collapsible title="Small" size="small" style={{ marginBottom: '12px' }}>
+                  <p>Small size collapsible section - slightly more compact than default.</p>
+                </Collapsible>
+                <Collapsible title="Medium (Default)" size="medium" style={{ marginBottom: '12px' }}>
+                  <p>Medium size collapsible section (default) - balanced padding and spacing.</p>
+                </Collapsible>
+                <Collapsible title="Large" size="large" style={{ marginBottom: '12px' }}>
+                  <p>Large size collapsible section - more spacious with larger text.</p>
+                </Collapsible>
+                <Collapsible title="Extra Large (large)" size="large" style={{ marginBottom: '12px' }}>
+                  <p>Extra large size collapsible section - maximum padding and prominent text.</p>
+                </Collapsible>
+              </div>
+            </div>
+
+            <div className="showcase-item">
+              <h3>With Header Content</h3>
+              <div style={{ marginTop: '16px' }}>
+                <Collapsible 
+                  title="Monero (XMR)"
+                  headerContent={
+                    <Badge variant="success" size="small">Running</Badge>
+                  }
+                >
+                  <div style={{ padding: '8px 0' }}>
+                    <p>Mining configuration and status for Monero.</p>
+                    <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
+                      <Button size="small">Start Mining</Button>
+                      <Button size="small" variant="secondary">Configure</Button>
+                    </div>
+                  </div>
+                </Collapsible>
+              </div>
+            </div>
+
+            <div className="showcase-item">
+              <h3>Default Collapsed</h3>
+              <div style={{ marginTop: '16px' }}>
+                <Collapsible title="Chia (XCH)" defaultCollapsed={true}>
+                  <div style={{ padding: '8px 0' }}>
+                    <p>This section starts collapsed by default.</p>
+                    <ProgressBar value={45} variant="disk" label="Plot Progress" />
+                  </div>
+                </Collapsible>
+              </div>
+            </div>
+
+            <div className="showcase-item">
+              <h3>Real-World Example (Miner Tab Style)</h3>
+              <div style={{ marginTop: '16px', padding: '16px', background: 'var(--background)', borderRadius: '4px', border: '1px solid var(--border)' }}>
+                <h4 style={{ marginTop: 0, marginBottom: '12px' }}>Mining Configuration</h4>
+                <Collapsible title="System Settings" variant="card" style={{ marginBottom: '12px' }}>
+                  <div style={{ padding: '8px 0' }}>
+                    <Input label="Shared SSH Password" type="password" defaultValue="••••••••••" />
+                    <p style={{ fontSize: '0.85rem', color: 'var(--secondary)', marginTop: '8px' }}>
+                      Default root password from your preseed ISO (used for claiming new miners)
+                    </p>
+                  </div>
+                </Collapsible>
+                <Collapsible 
+                  title="Monero (XMR)" 
+                  variant="card"
+                  defaultCollapsed={true}
+                  headerContent={<Badge variant="success" size="small">Running</Badge>}
+                  style={{ marginBottom: '12px' }}
+                >
+                  <div style={{ padding: '8px 0' }}>
+                    <p>Monero mining configuration and controls.</p>
+                    <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
+                      <Button size="small">Stop Mining</Button>
+                      <Button size="small" variant="secondary">Configure Pool</Button>
+                    </div>
+                  </div>
+                </Collapsible>
+                <Collapsible 
+                  title="Chia (XCH)" 
+                  variant="card"
+                  defaultCollapsed={true}
+                  headerContent={<Badge variant="secondary" size="small">Idle</Badge>}
+                  style={{ marginBottom: '12px' }}
+                >
+                  <div style={{ padding: '8px 0' }}>
+                    <p>Chia plotting and farming configuration.</p>
+                    <ProgressBar value={65} variant="disk" label="Plot Progress" leftLabel="65 plots" rightLabel="100 total" />
+                  </div>
+                </Collapsible>
+                <Collapsible 
+                  title="Raptoreum (RTM)" 
+                  variant="card"
+                  defaultCollapsed={true}
+                  headerContent={<Badge variant="secondary" size="small">Idle</Badge>}
+                >
+                  <div style={{ padding: '8px 0' }}>
+                    <p>Raptoreum mining configuration.</p>
+                    <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
+                      <Button size="small">Start Mining</Button>
+                      <Button size="small" variant="secondary">Configure</Button>
+                    </div>
+                  </div>
+                </Collapsible>
+              </div>
+            </div>
+
+            <div className="showcase-item" style={{ marginTop: '16px' }}>
+              <h5>Features:</h5>
+              <ul style={{ color: 'var(--secondary)', lineHeight: '1.6', fontSize: '0.9em' }}>
+                <li>Clickable header with caret icon (▼) that rotates on expand/collapse</li>
+                <li>Optional title and custom header content (badges, icons, etc.)</li>
+                <li>Variants: default, card, minimal</li>
+                <li>Size variants: xs, small, medium, large, xl</li>
+                <li>Default collapsed state option</li>
+                <li>onToggle callback for state management</li>
+                <li>Smooth animations for expand/collapse</li>
+                <li>Keyboard accessible (Enter/Space to toggle)</li>
+                <li>ARIA attributes for screen readers</li>
+                <li>Backward compatible with legacy CSS classes (.section-header, .section-content, .collapse-icon)</li>
+                <li>Uses CSS variables for theming</li>
+                <li>Reduced padding by 10% across all sizes for more compact appearance</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {activeShowcaseTab === 'modals' && (
+          <div className="showcase-section">
+            <h3>Modal System</h3>
+            <p style={{ marginBottom: '2rem', color: 'var(--secondary)' }}>
+              Interactive modal dialogs with various sizes and configurations. Click buttons to see different modal appearances.
+            </p>
+
+            <div className="showcase-grid">
+              <div className="showcase-item">
+                <h4>Small/Medium Modal (Default)</h4>
+                <p style={{ fontSize: '0.9em', color: 'var(--secondary)', marginBottom: '0.75rem' }}>
+                  Standard modal with default max-width (600px)
+                </p>
+                <Button
+                  variant="primary"
+                  onClick={() => openModal(
+                    <div style={{ padding: '1rem' }}>
+                      <p>This is a standard modal with default sizing.</p>
+                      <p style={{ marginTop: '1rem', color: 'var(--secondary)' }}>
+                        Max width: 600px, centered on screen.
+                      </p>
+                    </div>,
+                    { title: 'Standard Modal' }
+                  )}
+                >
+                  Open Standard Modal
+                </Button>
+              </div>
+
+              <div className="showcase-item">
+                <h4>Large Modal</h4>
+                <p style={{ fontSize: '0.9em', color: 'var(--secondary)', marginBottom: '0.75rem' }}>
+                  Wider modal for more content (uses CSS override)
+                </p>
+                <Button
+                  variant="primary"
+                  onClick={() => openModal(
+                    <div data-modal-size="large" style={{ padding: '1rem' }}>
+                      <p>This is a large modal with extended width.</p>
+                      <p style={{ marginTop: '1rem', color: 'var(--secondary)' }}>
+                        Uses custom CSS to override default max-width (90vw).
+                      </p>
+                    </div>,
+                    { 
+                      title: 'Large Modal',
+                      hideActions: true
+                    }
+                  )}
+                >
+                  Open Large Modal
+                </Button>
+              </div>
+
+              <div className="showcase-item">
+                <h4>Full-Screen Modal</h4>
+                <p style={{ fontSize: '0.9em', color: 'var(--secondary)', marginBottom: '0.75rem' }}>
+                  Full viewport width and height (like LogViewerModal)
+                </p>
+                <Button
+                  variant="primary"
+                  onClick={() => openModal(
+                    <div data-modal-size="fullscreen" style={{ padding: '1rem', height: '100%', overflow: 'auto' }}>
+                      <h3 style={{ marginTop: 0 }}>Full-Screen Modal</h3>
+                      <p>This modal takes up 95% of viewport width and 90% of viewport height.</p>
+                      <p style={{ marginTop: '1rem' }}>
+                        Perfect for log viewers, large data displays, or complex forms.
+                      </p>
+                      <div style={{ marginTop: '2rem', padding: '1rem', background: 'var(--primary)', borderRadius: '8px' }}>
+                        <p style={{ margin: 0 }}>Example content area with scrolling</p>
+                        {Array.from({ length: 20 }, (_, i) => (
+                          <p key={i} style={{ margin: '0.5rem 0' }}>
+                            Scrollable content line {i + 1}
+                          </p>
+                        ))}
+                      </div>
+                    </div>,
+                    { 
+                      title: 'Full-Screen Modal',
+                      hideActions: true
+                    }
+                  )}
+                >
+                  Open Full-Screen Modal
+                </Button>
+              </div>
+
+              <div className="showcase-item">
+                <h4>Modal Without Title</h4>
+                <p style={{ fontSize: '0.9em', color: 'var(--secondary)', marginBottom: '0.75rem' }}>
+                  Modal with no header title
+                </p>
+                <Button
+                  variant="primary"
+                  onClick={() => openModal(
+                    <div style={{ padding: '1rem' }}>
+                      <h3 style={{ marginTop: 0 }}>Content Title</h3>
+                      <p>This modal has no title in the header. The content provides its own heading.</p>
+                    </div>,
+                    { hideActions: true }
+                  )}
+                >
+                  Open Modal (No Title)
+                </Button>
+              </div>
+
+              <div className="showcase-item">
+                <h4>Modal With Actions</h4>
+                <p style={{ fontSize: '0.9em', color: 'var(--secondary)', marginBottom: '0.75rem' }}>
+                  Standard modal with Confirm/Cancel buttons
+                </p>
+                <Button
+                  variant="primary"
+                  onClick={() => openModal(
+                    <div style={{ padding: '1rem' }}>
+                      <p>This modal includes default action buttons (Confirm/Cancel).</p>
+                      <p style={{ marginTop: '1rem', color: 'var(--secondary)' }}>
+                        Click Confirm to close, or Cancel/× to dismiss.
+                      </p>
+                    </div>,
+                    { 
+                      title: 'Modal With Actions',
+                      onConfirm: async () => {
+                        alert('Confirmed!');
+                        return true;
+                      }
+                    }
+                  )}
+                >
+                  Open Modal (With Actions)
+                </Button>
+              </div>
+
+              <div className="showcase-item">
+                <h4>Modal Without Actions</h4>
+                <p style={{ fontSize: '0.9em', color: 'var(--secondary)', marginBottom: '0.75rem' }}>
+                  Modal with custom inline actions (hideActions: true)
+                </p>
+                <Button
+                  variant="primary"
+                  onClick={() => openModal(
+                    <div style={{ padding: '1rem' }}>
+                      <p>This modal has no default action buttons.</p>
+                      <p style={{ marginTop: '1rem', color: 'var(--secondary)' }}>
+                        Use custom buttons or the × button to close.
+                      </p>
+                      <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                        <Button variant="secondary" size="small" onClick={() => {
+                          closeModal();
+                        }}>
+                          Custom Close
+                        </Button>
+                        <Button variant="primary" size="small" onClick={() => {
+                          alert('Custom action!');
+                        }}>
+                          Custom Action
+                        </Button>
+                      </div>
+                    </div>,
+                    { 
+                      title: 'Modal Without Actions',
+                      hideActions: true
+                    }
+                  )}
+                >
+                  Open Modal (No Actions)
+                </Button>
+              </div>
+
+              <div className="showcase-item">
+                <h4>Form Modal</h4>
+                <p style={{ fontSize: '0.9em', color: 'var(--secondary)', marginBottom: '0.75rem' }}>
+                  Modal with form inputs
+                </p>
+                <Button
+                  variant="primary"
+                  onClick={() => openModal(
+                    <div style={{ padding: '1rem' }}>
+                      <div className="input-group">
+                        <label>Name</label>
+                        <input type="text" placeholder="Enter name" />
+                      </div>
+                      <div className="input-group" style={{ marginTop: '1rem' }}>
+                        <label>Email</label>
+                        <input type="email" placeholder="Enter email" />
+                      </div>
+                      <div className="input-group" style={{ marginTop: '1rem' }}>
+                        <label>Message</label>
+                        <textarea 
+                          placeholder="Enter message" 
+                          style={{
+                            width: '100%',
+                            minHeight: '100px',
+                            padding: '0.6rem 0.75rem',
+                            borderRadius: '6px',
+                            border: '1px solid var(--border)',
+                            backgroundColor: 'var(--hiddenTabBackground)',
+                            color: 'var(--text)',
+                            fontFamily: 'inherit',
+                            fontSize: '0.9rem',
+                            resize: 'vertical'
+                          }}
+                        />
+                      </div>
+                    </div>,
+                    { 
+                      title: 'Form Modal',
+                      onConfirm: async () => {
+                        alert('Form submitted!');
+                        return true;
+                      }
+                    }
+                  )}
+                >
+                  Open Form Modal
+                </Button>
+              </div>
+
+              <div className="showcase-item">
+                <h4>Rich Content Modal</h4>
+                <p style={{ fontSize: '0.9em', color: 'var(--secondary)', marginBottom: '0.75rem' }}>
+                  Modal with cards, badges, and complex layout
+                </p>
+                <Button
+                  variant="primary"
+                  onClick={() => openModal(
+                    <div style={{ padding: '1rem' }}>
+                      <div style={{ marginBottom: '1rem' }}>
+                        <Card variant="default">
+                          <div style={{ padding: '1rem' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                              <Badge variant="success">Active</Badge>
+                              <h4 style={{ margin: 0 }}>Service Status</h4>
+                            </div>
+                            <p style={{ margin: 0, color: 'var(--secondary)' }}>
+                              All systems operational
+                            </p>
+                          </div>
+                        </Card>
+                      </div>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+                        <Card variant="clickable">
+                          <div style={{ padding: '0.75rem' }}>
+                            <Badge variant="primary">Option 1</Badge>
+                          </div>
+                        </Card>
+                        <Card variant="clickable">
+                          <div style={{ padding: '0.75rem' }}>
+                            <Badge variant="secondary">Option 2</Badge>
+                          </div>
+                        </Card>
+                      </div>
+                    </div>,
+                    { 
+                      title: 'Rich Content Modal',
+                      hideActions: true
+                    }
+                  )}
+                >
+                  Open Rich Content Modal
+                </Button>
+              </div>
+
+              <div className="showcase-item">
+                <h4>Confirmation Modal</h4>
+                <p style={{ fontSize: '0.9em', color: 'var(--secondary)', marginBottom: '0.75rem' }}>
+                  Simple confirmation dialog
+                </p>
+                <Button
+                  variant="danger"
+                  onClick={() => openModal(
+                    <div style={{ padding: '1rem' }}>
+                      <p style={{ fontWeight: 600, marginBottom: '0.5rem' }}>
+                        Are you sure you want to proceed?
+                      </p>
+                      <p style={{ color: 'var(--secondary)', fontSize: '0.9em' }}>
+                        This action cannot be undone.
+                      </p>
+                    </div>,
+                    { 
+                      title: 'Confirm Action',
+                      onConfirm: async () => {
+                        alert('Action confirmed!');
+                        return true;
+                      }
+                    }
+                  )}
+                >
+                  Open Confirmation Modal
+                </Button>
+              </div>
+            </div>
+
+            <div className="showcase-item" style={{ marginTop: '32px' }}>
+              <h4>Modal Features:</h4>
+              <ul style={{ color: 'var(--secondary)', lineHeight: '1.6', fontSize: '0.9em' }}>
+                <li>Single modal at a time (opening a new modal replaces the current one)</li>
+                <li>Default max-width: 600px (95vw on mobile)</li>
+                <li>Full-screen option: 95vw × 90vh (via CSS override)</li>
+                <li>Optional title in header</li>
+                <li>Optional default action buttons (Confirm/Cancel)</li>
+                <li>Custom content with any React components</li>
+                <li>Keyboard accessible (ESC to close, Enter to confirm)</li>
+                <li>Focus management and ARIA attributes</li>
+                <li>Overlay with backdrop blur</li>
+                <li>Close button (×) always available in header</li>
+                <li>Scrollable content area when content exceeds viewport</li>
+                <li>Mobile-responsive with adjusted sizing</li>
               </ul>
             </div>
           </div>
