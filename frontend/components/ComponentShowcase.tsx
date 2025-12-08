@@ -95,108 +95,126 @@ $ serve -s build
         <Tab
           active={activeShowcaseTab === 'buttons'}
           onClick={() => setActiveShowcaseTab('buttons')}
+          depth={3}
         >
           Buttons
         </Tab>
         <Tab
           active={activeShowcaseTab === 'toggles'}
           onClick={() => setActiveShowcaseTab('toggles')}
+          depth={3}
         >
           Toggles
         </Tab>
         <Tab
           active={activeShowcaseTab === 'tabs'}
           onClick={() => setActiveShowcaseTab('tabs')}
+          depth={3}
         >
           Tabs
         </Tab>
         <Tab
           active={activeShowcaseTab === 'inputs'}
           onClick={() => setActiveShowcaseTab('inputs')}
+          depth={3}
         >
           Inputs
         </Tab>
         <Tab
           active={activeShowcaseTab === 'cards'}
           onClick={() => setActiveShowcaseTab('cards')}
+          depth={3}
         >
           Cards
         </Tab>
         <Tab
           active={activeShowcaseTab === 'badges'}
           onClick={() => setActiveShowcaseTab('badges')}
+          depth={3}
         >
           Badges
         </Tab>
         <Tab
           active={activeShowcaseTab === 'checkboxes'}
           onClick={() => setActiveShowcaseTab('checkboxes')}
+          depth={3}
         >
           Checkboxes
         </Tab>
         <Tab
           active={activeShowcaseTab === 'utilities'}
           onClick={() => setActiveShowcaseTab('utilities')}
+          depth={3}
         >
           Utilities
         </Tab>
         <Tab
           active={activeShowcaseTab === 'calendar-time'}
           onClick={() => setActiveShowcaseTab('calendar-time')}
+          depth={3}
         >
           Calendar & Time
         </Tab>
         <Tab
           active={activeShowcaseTab === 'row-info-tile'}
           onClick={() => setActiveShowcaseTab('row-info-tile')}
+          depth={3}
         >
           Row Info Tile
         </Tab>
         <Tab
           active={activeShowcaseTab === 'dropdowns'}
           onClick={() => setActiveShowcaseTab('dropdowns')}
+          depth={3}
         >
           Dropdowns
         </Tab>
         <Tab
           active={activeShowcaseTab === 'slider'}
           onClick={() => setActiveShowcaseTab('slider')}
+          depth={3}
         >
           Slider
         </Tab>
         <Tab
           active={activeShowcaseTab === 'textbox'}
           onClick={() => setActiveShowcaseTab('textbox')}
+          depth={3}
         >
           Text Box
         </Tab>
         <Tab
           active={activeShowcaseTab === 'upload-components'}
           onClick={() => setActiveShowcaseTab('upload-components')}
+          depth={3}
         >
           Upload Components
         </Tab>
         <Tab
           active={activeShowcaseTab === 'progress-bar'}
           onClick={() => setActiveShowcaseTab('progress-bar')}
+          depth={3}
         >
           Progress Bar
         </Tab>
         <Tab
           active={activeShowcaseTab === 'table'}
           onClick={() => setActiveShowcaseTab('table')}
+          depth={3}
         >
           Table
         </Tab>
         <Tab
           active={activeShowcaseTab === 'collapsible'}
           onClick={() => setActiveShowcaseTab('collapsible')}
+          depth={3}
         >
           Collapsible
         </Tab>
         <Tab
           active={activeShowcaseTab === 'modals'}
           onClick={() => setActiveShowcaseTab('modals')}
+          depth={3}
         >
           Modals
         </Tab>

@@ -94,24 +94,28 @@ const TestTablet: React.FC = () => {
         <Tab
           active={activeTab === 'showcase'}
           onClick={() => setActiveTab('showcase')}
+          depth={2}
         >
           Component Showcase
         </Tab>
         <Tab
           active={activeTab === 'services'}
           onClick={() => setActiveTab('services')}
+          depth={2}
         >
           Services
         </Tab>
         <Tab
           active={activeTab === 'config'}
           onClick={() => setActiveTab('config')}
+          depth={2}
         >
           Configuration
         </Tab>
         <Tab
           active={activeTab === 'health'}
           onClick={() => setActiveTab('health')}
+          depth={2}
         >
           Health Status
         </Tab>
