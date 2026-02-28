@@ -2283,8 +2283,8 @@ export const MyComponent: React.FC = () => {
                 <Table
                   headers={['Interface', 'Label', 'Received', 'Sent']}
                   rows={[
-                    ['enp1s0', 'WAN', '1.2 GB', '500 MB'],
-                    ['enp2s0', 'LAN', '5.8 GB', '3.2 GB'],
+                    ['wan0', 'WAN', '1.2 GB', '500 MB'],
+                    ['lan0', 'LAN', '5.8 GB', '3.2 GB'],
                     ['tailscale0', 'Tailscale VPN', '250 MB', '180 MB'],
                   ]}
                 />
